@@ -31,7 +31,7 @@ ALLOWED_HOSTS = ['bee-xj6g.onrender.com']
 # Application definition
 
 INSTALLED_APPS = [
-    'p.bee',
+    'bee',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
