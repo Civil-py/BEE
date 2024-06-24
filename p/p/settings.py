@@ -126,7 +126,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [
-    'bee/static/bee',
+    BASE_DIR / 'bee/static',
 ]
 
 
