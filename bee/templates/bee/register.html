@@ -1,0 +1,19 @@
+{% include "bee/header.html" %}
+<style>
+    .top-left-image {
+    position: absolute;
+    top: 10px; /* Adjust to move image down */
+    left: 10px; /* Adjust to move image right */
+    width: 100px; /* Adjust as needed */
+    height: auto; /* Maintain aspect ratio */
+}
+</style>
+<body>
+<form method="post">
+        {% csrf_token %}
+         {{ form.as_p }}
+     <button type="submit" class="btn btn-secondary btn-sm">Save</button>
+    </form>
+
+</body>
+</html>
