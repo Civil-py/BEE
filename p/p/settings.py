@@ -122,7 +122,12 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = BASE_DIR / 'bee/staticfiles' 
+STATICFILES_DIRS = [
+    BASE_DIR / 'bee/static',
+]
+
+
+STATIC_ROOT = BASE_DIR / 'staticfiles' 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
