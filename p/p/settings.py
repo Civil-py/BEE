@@ -123,7 +123,11 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 
-STATIC_ROOT = BASE_DIR / 'bee/static/bee'
+STATIC_ROOT = BASE_DIR / 'bee/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'bee/static/bee',
+]
 
 
 
