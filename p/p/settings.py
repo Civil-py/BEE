@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['bee-xj6g.onrender.com']
 
 INSTALLED_APPS = [
     'bee',
+    'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -73,6 +74,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'p.wsgi.application'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 
 
 # Database
