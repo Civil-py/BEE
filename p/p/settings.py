@@ -129,9 +129,10 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'bee/static',
-]
+
+STATICFILES_DIRS = (
+    os.path.join(SITE_ROOT, '..', 'bee/static'),
+)
 
 
 
