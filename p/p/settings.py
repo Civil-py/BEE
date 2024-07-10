@@ -22,6 +22,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-)ci1su+bga#d)k5b$yq)^1w*cmo-#kux9d@%)&0ssyb(-9s!+_'
 
+AWS_COGNITO_REGION = 'af-south-1'
+AWS_COGNITO_USER_POOL_ID = 'af-south-1_3ogEVC8W6'
+AWS_COGNITO_APP_CLIENT_ID = '1qa3ngvpha1hcge9arintssh30'
+AWS_COGNITO_APP_CLIENT_SECRET = '8u4alc94vr3pdn67tbal25eu1pk4colfs2t9g9id6ato7o90ts1'
+AWS_COGNITO_REDIRECT_URL = 'https%3A%2F%2F127.0.0.1%3A8000%2Fbee%2Fhome'
+AWS_COGNITO_LOGOUT_URL = 'https://localhost:8000/cognito/logout/'
+
+# Add your AWS Cognito User Pool's JWK URL to your settings
+AWS_COGNITO_JWK_URL = f'https://cognito-idp.{AWS_COGNITO_REGION}.amazonaws.com/{AWS_COGNITO_USER_POOL_ID}/.well-known/jwks.json'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
