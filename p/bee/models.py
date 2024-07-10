@@ -83,18 +83,23 @@ class BeeUsers(models.Model):
         return f"{self.user.username if self.user else 'No User'}"
 
 class EmploymentEquity(models.Model):
-    name_and_surname = models.CharField(max_length=64, null=True)
-    id_number = models.IntegerField(null=True, blank=True, unique=True)
-    job_title = models.CharField(max_length=64,null=True)
-    race = models.CharField(max_length=64, null=True, choices=RACE_TYPES)
-    gender = models.CharField(max_length=64, null=True, choices=GENDER_TYPES)
-    disabled = models.CharField(max_length=64, null=True, choices=YES_NO)
-    description_of_disability = models.CharField(max_length=150, null=True)
-    occupational_level =  models.CharField(max_length=64, null=True, choices=OCCUPATIONAL_LEVEL)
-    foreign = models.CharField(max_length=64, null=True, choices=YES_NO)
-    pilot = models.CharField(max_length=64, null=True, choices=YES_NO)
-    technician = models.CharField(max_length=64, null=True, choices=YES_NO)
-    black_youth_as_defined_by_the_national_youth_commission_act_of_1996 = models.CharField(max_length=64, null=True, choices=YES_NO)
+    Table_Name = models.CharField(null=True, max_length=64)
+    ID = models.CharField(max_length=64, primary_key=True)
+    Name = models.CharField(max_length=64, null=True)
+    Surname = models.CharField(max_length=64, null=True)
+    Ingest_date = models.CharField(null=True, max_length=64)
+    Id_Number = models.IntegerField(null=True, blank=True, unique=True)
+    Job_title = models.CharField(max_length=64,null=True)
+    Race = models.CharField(max_length=64, null=True, choices=RACE_TYPES)
+    Gender = models.CharField(max_length=64, null=True, choices=GENDER_TYPES)
+    Disabled = models.CharField(max_length=64, null=True, choices=YES_NO)
+    Gross_Monthly_Salary = models.FloatField(null=True, blank=True, unique=True)
+    Description_of_disability = models.CharField(max_length=150, null=True)
+    Occupational_Level =  models.CharField(max_length=64, null=True, choices=OCCUPATIONAL_LEVEL)
+    Foreign = models.CharField(max_length=64, null=True, choices=YES_NO)
+    Pilot = models.CharField(max_length=64, null=True, choices=YES_NO)
+    Technician = models.CharField(max_length=64, null=True, choices=YES_NO)
+    Black_Youth = models.CharField(max_length=64, null=True, choices=YES_NO)
 
 
 
@@ -177,14 +182,17 @@ class Procurement(models.Model):
 
 
 class SocioEconomicDevelopment(models.Model):
-    beneficiary = models.CharField(max_length=64, null=True)
-    ict_sector_initiative = models.CharField(max_length=64, null=True, choices=YES_NO)
-    black_participation_percent = models.FloatField(null=True, blank=True)
-    contribution_type = models.CharField(max_length=64, null=True, choices=CONTRIBUTION_TYPES)
-    description_of_contribution = models.CharField(max_length=64, null=True)
-    structured_sed_project = models.CharField(max_length=64, null=True, choices=YES_NO)
-    date_of_contribution = models.DateField(null=True)
-    amount_of_contribution = models.FloatField(null=True, blank=True)
+    Table_Name = models.CharField(null=True, max_length=64)
+    ID = models.CharField(max_length=64, primary_key=True)
+    Ingest_date = models.CharField(null=True, max_length=64)
+    Beneficiary = models.CharField(max_length=64, null=True)
+    ICT_Sector_Initiative = models.CharField(max_length=64, null=True, choices=YES_NO)
+    Percentage_of_Black_participation = models.FloatField(null=True, blank=True)
+    Contribution_Type = models.CharField(max_length=64, null=True, choices=CONTRIBUTION_TYPES)
+    Description_of_Contribution = models.CharField(max_length=64, null=True)
+    Structured_SED_Project = models.CharField(max_length=64, null=True, choices=YES_NO)
+    Date_of_Contribution = models.DateField(null=True)
+    Amount_of_Contribution = models.FloatField(null=True, blank=True)
 
 
 
@@ -201,6 +209,8 @@ class FinancialInformation(models.Model):
     cost_of_sales_purchases_only = models.FloatField(null=True, blank=True)
     additions_capex_for_the_year =  models.FloatField(null=True, blank=True)
     depreciation_for_the_year = models.FloatField(null=True, blank=True)
+
+
 
 
 class Valuation(models.Model):
