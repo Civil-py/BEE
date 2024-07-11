@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-from .models import User, BeeUsers, EmploymentEquity, Procurement, SkillsDevelopment, Ownership, Board, SocioEconomicDevelopment, FinacialSkillsDevelopment, FinancialInformation, NetProfit_ED_ESD
+from .models import User, BeeUsers, EmploymentEquity, Procurement, SkillsDevelopment, Ownership, Board, SocioEconomicDevelopment, FinacialSkillsDevelopment, FinancialInformation, NetProfit_ED_ESD, Valuation
 
 class UserForm(forms.ModelForm):
 
@@ -38,18 +38,23 @@ class EmploymentEquityForm(forms.ModelForm):
     class Meta:
         model = EmploymentEquity
         fields = '__all__'
-        widgets = {'name_and_surname': forms.TextInput(attrs={'class': 'form-control'}),
-                   'id_number': forms.TextInput(attrs={'class': 'form-control'}),
-                   'job_title': forms.TextInput(attrs={'class': 'form-control'}),
-                   'race': forms.Select(attrs={'class': 'form-control'}),
-                    'gender': forms.Select(attrs={'class': 'form-control'}),
-                    'disabled': forms.Select(attrs={'class': 'form-control'}),
-                    'description_of_disability': forms.TextInput(attrs={'class': 'form-control'}),
-                    'occupational_level': forms.Select(attrs={'class': 'form-control'}),
-                    'foreign':forms.Select(attrs={'class': 'form-control'}),
-                    'pilot': forms.Select(attrs={'class': 'form-control'}),
-                    'technician': forms.Select(attrs={'class': 'form-control'}),
-                   'black_youth_as_defined_by_the_national_youth_commission_act_of_1996' : forms.Select(attrs={'class': 'form-control'})}
+        widgets = {'Name': forms.TextInput(attrs={'class': 'form-control'}),
+                   'ID': forms.HiddenInput(),
+                   'Ingest_date': forms.HiddenInput(),
+                   'Table_Name': forms.HiddenInput(),
+                   'Surname': forms.TextInput(attrs={'class': 'form-control'}),
+                   'Id_Number': forms.TextInput(attrs={'class': 'form-control'}),
+                   'Job_title': forms.TextInput(attrs={'class': 'form-control'}),
+                   'Gross_Monthly_Salary': forms.TextInput(attrs={'class': 'form-control'}),
+                   'Race': forms.Select(attrs={'class': 'form-control'}),
+                    'Gender': forms.Select(attrs={'class': 'form-control'}),
+                    'Disabled': forms.Select(attrs={'class': 'form-control'}),
+                    'Description_of_disability': forms.TextInput(attrs={'class': 'form-control'}),
+                    'Occupational_Level': forms.Select(attrs={'class': 'form-control'}),
+                    'Foreign':forms.Select(attrs={'class': 'form-control'}),
+                    'Pilot': forms.Select(attrs={'class': 'form-control'}),
+                    'Technician': forms.Select(attrs={'class': 'form-control'}),
+                   'Black_Youth' : forms.Select(attrs={'class': 'form-control'})}
 
 
     def __init__(self, *args, **kwargs):
@@ -58,20 +63,21 @@ class EmploymentEquityForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Submit'))
 
-        # Customize field labels
-        self.fields['name_and_surname'].label = 'Name And Surname'
-        self.fields['id_number'].label = 'ID Number'
-        self.fields['job_title'].label = 'Job Title'
-        self.fields['race'].label = 'Race'
-        self.fields['gender'].label = 'Gender'
-        self.fields['disabled'].label = 'Disabled'
-        self.fields['description_of_disability'].label = 'Description Of Disability'
-        self.fields['occupational_level'].label = 'Occupational Level'
-        self.fields['foreign'].label = 'Foreign'
-        self.fields['pilot'].label = 'Pilot'
-        self.fields['technician'].label = 'Technician'
+        # # Customize field labels
+        # self.fields['Name'].label = 'Name'
+        # self.fields['surname'].label = 'Surname'
+        self.fields['Id_Number'].label = 'ID Number'
+        self.fields['Gross_Monthly_Salary'].label = 'Gross Monthly Salary (R)'
+        # self.fields['race'].label = 'Race'
+        # self.fields['gender'].label = 'Gender'
+        # self.fields['disabled'].label = 'Disabled'
+        # self.fields['description_of_disability'].label = 'Description Of Disability'
+        # self.fields['occupational_level'].label = 'Occupational Level'
+        # self.fields['foreign'].label = 'Foreign'
+        # self.fields['pilot'].label = 'Pilot'
+        # self.fields['technician'].label = 'Technician'
         self.fields[
-            'black_youth_as_defined_by_the_national_youth_commission_act_of_1996'].label = 'Black Youth (as defined by the National Youth Commission Act of 1996)'
+            'Black_Youth'].label = 'Black Youth (as defined by the National Youth Commission Act of 1996)'
 
 
 
@@ -270,14 +276,17 @@ class SocioEconomicDevelopmentForm(forms.ModelForm):
         model = SocioEconomicDevelopment
         fields = '__all__'
         widgets = {
-            'beneficiary': forms.TextInput(attrs={'class': 'form-control'}),
-            'ict_sector_initiative': forms.Select(attrs={'class': 'form-control'}),
-            'black_participation_percent': forms.TextInput(attrs={'class': 'form-control'}),
-            'contribution_type': forms.Select(attrs={'class': 'form-control'}),
-            'description_of_contribution': forms.TextInput(attrs={'class': 'form-control'}),
-            'structured_sed_project': forms.Select(attrs={'class': 'form-control'}),
-            'date_of_contribution': forms.TextInput(attrs={'class': 'form-control'}),
-            'amount_of_contribution': forms.TextInput(attrs={'class': 'form-control'}),
+            'ID': forms.HiddenInput(),
+            'Ingest_date': forms.HiddenInput(),
+            'Table_Name': forms.HiddenInput(),
+            'Beneficiary': forms.TextInput(attrs={'class': 'form-control'}),
+            'ICT_Sector_Initiative': forms.Select(attrs={'class': 'form-control'}),
+            'Percentage_of_Black_participation': forms.TextInput(attrs={'class': 'form-control'}),
+            'Contribution_Type': forms.Select(attrs={'class': 'form-control'}),
+            'Description_of_Contribution': forms.TextInput(attrs={'class': 'form-control'}),
+            'Structured_SED_Project': forms.Select(attrs={'class': 'form-control'}),
+            'Date_of_Contribution': forms.TextInput(attrs={'class': 'form-control'}),
+            'Amount_of_Contribution': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -287,14 +296,14 @@ class SocioEconomicDevelopmentForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Submit'))
 
         # Customize field labels
-        self.fields['beneficiary'].label = 'Beneficiary'
-        self.fields['ict_sector_initiative'].label = 'ICT Sector Initiative'
-        self.fields['black_participation_percent'].label = 'Black Participation Percentage'
-        self.fields['contribution_type'].label = 'Contribution Type'
-        self.fields['description_of_contribution'].label = 'Description of Contribution'
-        self.fields['structured_sed_project'].label = 'Structured SED Project'
-        self.fields['date_of_contribution'].label = 'Date of Contribution'
-        self.fields['amount_of_contribution'].label = 'Amount of Contribution'
+        # self.fields['beneficiary'].label = 'Beneficiary'
+        # self.fields['ict_sector_initiative'].label = 'ICT Sector Initiative'
+        self.fields['Percentage_of_Black_participation'].label = 'Black Participation %'
+        # self.fields['contribution_type'].label = 'Contribution Type'
+        # self.fields['description_of_contribution'].label = 'Description of Contribution'
+        # self.fields['structured_sed_project'].label = 'Structured SED Project'
+        # self.fields['date_of_contribution'].label = 'Date of Contribution'
+        # self.fields['amount_of_contribution'].label = 'Amount of Contribution'
 
 
 class FinacialSkillsDevelopmentForm(forms.ModelForm):
@@ -379,3 +388,32 @@ class NetProfit_ED_ESDForm(forms.ModelForm):
         self.fields['sed'].label = 'SED'
         self.fields['ed'].label = 'ED'
         self.fields['sd'].label = 'SD'
+
+
+
+class ValuationForm(forms.ModelForm):
+    class Meta:
+        model = Valuation
+        fields = '__all__'
+        widgets = {'valuation_method': forms.TextInput(attrs={'class': 'form-control'}),
+                   'formal_valuation_if_available': forms.TextInput(attrs={'class': 'form-control'}),
+                   'total_assets': forms.TextInput(attrs={'class': 'form-control'}),
+                   'total_liabilities': forms.TextInput(attrs={'class': 'form-control'}),
+                   'nett_asset_value_per_afs': forms.TextInput(attrs={'class': 'form-control'}),
+                   'finacial_period': forms.TextInput(attrs={'class': 'form-control'}),
+                   'month': forms.TextInput(attrs={'class': 'form-control'}),
+                   }
+
+    def __init__(self, *args, **kwargs):
+        super(ValuationForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Submit'))
+
+        # Customize field labels
+        self.fields['finacial_period'].label = 'Financial Period'
+        self.fields['valuation_method'].label = 'Valuation Method'
+        self.fields['formal_valuation_if_available'].label = 'Formal Valuation If Available'
+        self.fields['total_assets'].label = 'Total Assets'
+        self.fields['total_liabilities'].label = 'Total Liabilities'
+        self.fields['nett_asset_value_per_afs'].label = 'Nett Asset Value per afs'
