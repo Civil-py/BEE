@@ -64,7 +64,7 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
 
-ROOT_URLCONF = 'p.p.urls'
+ROOT_URLCONF = 'p.urls'
 
 TEMPLATES = [
     {
