@@ -11,7 +11,7 @@ from django.conf import settings
 import requests
 from jose import jwt
 import json
-from .utils import cognito_login
+
 from uuid import uuid4
 import datetime
 
