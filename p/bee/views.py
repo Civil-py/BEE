@@ -5,13 +5,13 @@ from django.contrib.auth.decorators import login_required
 from .models import User, EmploymentEquity, Procurement, SkillsDevelopment, Ownership, Board, SocioEconomicDevelopment, FinacialSkillsDevelopment, FinancialInformation, NetProfit_ED_ESD
 from .forms import UserForm, EmploymentEquityForm, ProcurementForm,SkillsDevelopmentForm, OwnershipForm, BoardForm, SocioEconomicDevelopmentForm, FinacialInformationForm, FinacialSkillsDevelopmentForm, NetProfit_ED_ESDForm, ValuationForm
 from django.contrib import messages
-from .serializers import EmploymentEquitySerializer, ProcurementSerializer, OwnershipSerializer, SkillsDevelopmentSerializer, BoardSerializer, FinancialInformationSerializer, FinacialSkillsDevelopmentSerializer, ValuationSerializer, NetProfit_ED_ESDSerializer
+
 from django.conf import settings
 
 import requests
 from jose import jwt
 import json
-from .utils import cognito_login
+
 from uuid import uuid4
 import datetime
 
