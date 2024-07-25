@@ -40,7 +40,7 @@ class EmploymentEquityForm(forms.ModelForm):
         fields = '__all__'
         widgets = {'Name': forms.TextInput(attrs={'class': 'form-control'}),
                    'ID': forms.HiddenInput(),
-                   'Company_Name': forms.HiddenInput(),
+                  
                    'Ingest_date': forms.HiddenInput(),
                    'Table_Name': forms.HiddenInput(),
                    'Surname': forms.TextInput(attrs={'class': 'form-control'}),
