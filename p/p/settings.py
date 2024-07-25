@@ -34,7 +34,7 @@ AWS_COGNITO_JWK_URL = f'https://cognito-idp.{AWS_COGNITO_REGION}.amazonaws.com/{
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['bee-xj6g.onrender.com', 'ec2-13-246-37-61.af-south-1.compute.amazonaws.com']
+ALLOWED_HOSTS = ['bee-xj6g.onrender.com', 'ec2-13-247-145-14.af-south-1.compute.amazonaws.com']
 
 
 # Application definition
