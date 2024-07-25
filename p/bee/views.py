@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .models import User, EmploymentEquity, Procurement, SkillsDevelopment, Ownership, Board, SocioEconomicDevelopment, FinacialSkillsDevelopment, FinancialInformation, NetProfit_ED_ESD
 from .forms import UserForm, EmploymentEquityForm, ProcurementForm,SkillsDevelopmentForm, OwnershipForm, BoardForm, SocioEconomicDevelopmentForm, FinacialInformationForm, FinacialSkillsDevelopmentForm, NetProfit_ED_ESDForm, ValuationForm
 from django.contrib import messages
+import boto3
 
 from django.conf import settings
 
@@ -20,8 +21,8 @@ import datetime
 
 
 
+
 def cognito_login(request):
-    login_str = 'https://dominateconsulting.auth.af-south-1.amazoncognito.com/login?client_id=1qa3ngvpha1hcge9arintssh30&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2F127.0.0.1%3A8000%2Fbee%2Fhome'
     cognito_login_url = (
         f"https://dominateconsulting.auth.{settings.AWS_COGNITO_REGION}.amazoncognito.com/login?"
         f"client_id={settings.AWS_COGNITO_APP_CLIENT_ID}&"
@@ -30,6 +31,50 @@ def cognito_login(request):
         f"redirect_uri={settings.AWS_COGNITO_REDIRECT_URL}"
     )
     return redirect(cognito_login_url)
+
+
+
+
+def cognito_authenticate(username, password):
+    client = boto3.client('cognito-idp', region_name=settings.AWS_COGNITO_REGION)
+
+    try:
+        response = client.initiate_auth(
+            AuthFlow='USER_PASSWORD_AUTH',
+            AuthParameters={
+                'USERNAME': username,
+                'PASSWORD': password
+            },
+            ClientId=settings.AWS_COGNITO_APP_CLIENT_ID
+        )
+        return response
+    except client.exceptions.NotAuthorizedException:
+        return None
+    except client.exceptions.UserNotFoundException:
+        return None
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return None
+
+
+def login_view(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        response = cognito_authenticate(username, password)
+
+        if response:
+            request.session['username'] = username
+            request.session['id_token'] = response['AuthenticationResult']['IdToken']
+            request.session['access_token'] = response['AuthenticationResult']['AccessToken']
+            request.session['refresh_token'] = response['AuthenticationResult']['RefreshToken']
+            messages.success(request, f'Welcome back {username}!')
+            return redirect('index')
+        else:
+            return render(request, 'bee/login.html', {'error': 'Invalid username or password'})
+    else:
+        return render(request, 'bee/login.html')
+
 
 def login(request, user):
     if request.method == "POST":
@@ -46,21 +91,29 @@ def login(request, user):
         return render(request, 'bee/login.html')
 
 
-
 def cognito_callback(request):
-    userinfo = cognito_login(request)
-    if userinfo:
-        username = userinfo['username']
-        email = userinfo['email']
+    code = request.GET.get('code')
+    token_url = f"https://dominateconsulting.auth.{settings.AWS_COGNITO_REGION}.amazoncognito.com/oauth2/token"
+    response = requests.post(token_url, data={
+        'grant_type': 'authorization_code',
+        'client_id': settings.AWS_COGNITO_APP_CLIENT_ID,
+        'client_secret': settings.AWS_COGNITO_APP_CLIENT_SECRET,
+        'code': code,
+        'redirect_uri': settings.AWS_COGNITO_REDIRECT_URL
+    }, headers={'Content-Type': 'application/x-www-form-urlencoded'})
+    token_data = response.json()
+    id_token = token_data.get('id_token')
+    access_token = token_data.get('access_token')
 
-        user, created = User.objects.get_or_create(username=username, defaults={'email': email})
-        if created:
-            user.set_unusable_password()
-            user.save()
-
-        login(request, user)
-        return redirect('home')  # Change 'home' to your desired redirect URL after login
-    return redirect('home')  # Change 'l
+    claims = validate_cognito_token(id_token)
+    if claims:
+        request.session['id_token'] = id_token
+        request.session['access_token'] = access_token
+        request.session['username'] = claims['cognito:username']
+        request.session['email'] = claims['email']
+        messages.success(request, f"Welcome {claims['email']}")
+        return redirect('index')
+    return redirect('login')
 
 def sync_cognito_user(user_info):
 
@@ -73,42 +126,6 @@ def sync_cognito_user(user_info):
 
     return user
 
-
-# def cognito_callback(request):
-#     code = request.GET.get('code')
-#
-#     token_url = f"https://{settings.AWS_COGNITO_REGION}.auth.{settings.AWS_COGNITO_REGION}.amazoncognito.com/oauth2/token"
-#     headers = {
-#         'Content-Type': 'application/x-www-form-urlencoded'
-#     }
-#     data = {
-#         'grant_type': 'authorization_code',
-#         'client_id': settings.AWS_COGNITO_APP_CLIENT_ID,
-#         'code': code,
-#         'redirect_uri': settings.AWS_COGNITO_REDIRECT_URL,
-#     }
-#
-#     response = requests.post(token_url, headers=headers, data=data, auth=(settings.AWS_COGNITO_APP_CLIENT_ID, settings.AWS_COGNITO_APP_CLIENT_SECRET))
-#     response_data = response.json()
-#
-#     id_token = response_data.get('id_token')
-#     access_token = response_data.get('access_token')
-#
-#     if id_token and access_token:
-#         request.session['id_token'] = id_token
-#         request.session['access_token'] = access_token
-#
-#         # Validate the token
-#         user_info = validate_cognito_token(id_token)
-#
-#         if user_info:
-#             # Here you would sync the user with your Django database
-#             sync_cognito_user(user_info)
-#             return redirect('home')
-#         else:
-#             return render(request, 'error.html', {'message': 'Invalid token'})
-#     else:
-#         return render(request, 'error.html', {'message': 'Authentication failed'})
 
 def validate_cognito_token(token):
     try:
@@ -162,23 +179,32 @@ def register(request):
     })
 
 
-def login_view(request):
-    if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            messages.success(request, f'Welcome back {user}!')
-            return redirect('index')
-        else:
-            return render(request, 'bee/login.html', {'error': 'Invalid username or password'})
-    else:
-        return render(request, 'bee/login.html')
 
 def logout_view(request):
     logout(request)
     return redirect('landingpage')
+
+def landingpage(request):
+    return render(request, "bee/landingpage.html")
+
+#
+# def login_view(request):
+#     if request.method == "POST":
+#         username = request.POST['username']
+#         password = request.POST['password']
+#         user = authenticate(request, username=username, password=password)
+#         if user is not None:
+#             login(request, user)
+#             messages.success(request, f'Welcome back {user}!')
+#             return redirect('index')
+#         else:
+#             return render(request, 'bee/login.html', {'error': 'Invalid username or password'})
+#     else:
+#         return render(request, 'bee/login.html')
+#
+# def logout_view(request):
+#     logout(request)
+#     return redirect('landingpage')
 
 
 
