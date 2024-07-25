@@ -53,15 +53,16 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'bee.middleware.CognitoMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',  # Ensure this is before your custom middleware
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'bee.middleware.CognitoMiddleware',  # Your custom middleware should be after SessionMiddleware
 ]
+
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'index'
