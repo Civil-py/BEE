@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 # Create your models here.
 RACE_TYPES = [
     ('African', 'African'),
@@ -83,6 +84,7 @@ class BeeUsers(models.Model):
         return f"{self.user.username if self.user else 'No User'}"
 
 class EmploymentEquity(models.Model):
+    Company_Name = models.CharField(null=True, max_length=64)
     Table_Name = models.CharField(null=True, max_length=64)
     ID = models.CharField(max_length=64, primary_key=True)
     Name = models.CharField(max_length=64, null=True)
@@ -236,48 +238,4 @@ class NetProfit_ED_ESD(models.Model):
     ed = models.FloatField(null=True, blank=True)
     sd = models.FloatField(null=True, blank=True)
     sed = models.FloatField(null=True, blank=True)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
