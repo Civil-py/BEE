@@ -40,9 +40,11 @@ class EmploymentEquityForm(forms.ModelForm):
         fields = '__all__'
         widgets = {'Name': forms.TextInput(attrs={'class': 'form-control'}),
                    'ID': forms.HiddenInput(),
-                  
+                   'Company_Name': forms.TextInput(attrs={'class': 'form-control'}),
+                   # 'Company_Name': forms.HiddenInput(),
                    'Ingest_date': forms.HiddenInput(),
                    'Table_Name': forms.HiddenInput(),
+                   'Createdby_user': forms.HiddenInput(),
                    'Surname': forms.TextInput(attrs={'class': 'form-control'}),
                    'Id_Number': forms.TextInput(attrs={'class': 'form-control'}),
                    'Job_title': forms.TextInput(attrs={'class': 'form-control'}),
@@ -88,20 +90,27 @@ class ProcurementForm(forms.ModelForm):
         model = Procurement
         fields = '__all__'
         widgets = {
-            'supplier_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'reg_no': forms.TextInput(attrs={'class': 'form-control'}),
-            'expenditure_per_supplier_ledger_for_the_period_including_vat': forms.TextInput(attrs={'class': 'form-control'}),
-            'expenditure_excluding_vat': forms.TextInput(attrs={'class': 'form-control'}),
-            'non_vat_item': forms.Select(attrs={'class': 'form-control'}),
-            'supplier_classification': forms.Select(attrs={'class': 'form-control'}),
-            'bee_level': forms.Select(attrs={'class': 'form-control'}),
-            'fifty_one_percent_or_more_black_owned': forms.Select(attrs={'class': 'form-control'}),
-            'black_ownership_percent': forms.TextInput(attrs={'class': 'form-control'}),
-            'thirty_percent_or_more_black_woman_owned': forms.Select(attrs={'class': 'form-control'}),
-            'black_woman_ownership': forms.TextInput(attrs={'class': 'form-control'}),
-            'empowering_supplier': forms.Select(attrs={'class': 'form-control'}),
-            'esd_recipient_and_black_owned_qse_or_eme_min_three_year_contract': forms.Select(attrs={'class': 'form-control'}),
-            'designated_group_supplier': forms.Select(attrs={'class': 'form-control'}),
+            'ID': forms.HiddenInput(),
+            'Company_Name': forms.TextInput(attrs={'class': 'form-control'}),
+            # 'Company_Name': forms.HiddenInput(),
+            'Ingest_date': forms.HiddenInput(),
+            'Table_Name': forms.HiddenInput(),
+            'Createdby_user': forms.HiddenInput(),
+            'Modifiedby_user': forms.HiddenInput(),
+            'Supplier_Name': forms.TextInput(attrs={'class': 'form-control'}),
+            'Reg_No': forms.TextInput(attrs={'class': 'form-control'}),
+            'Expenditure_incl_VAT': forms.TextInput(attrs={'class': 'form-control'}),
+            'Expenditure_excl_VAT': forms.TextInput(attrs={'class': 'form-control'}),
+            'Non_Vat_Item': forms.Select(attrs={'class': 'form-control'}),
+            'Supplier_Classification': forms.Select(attrs={'class': 'form-control'}),
+            'BEE_Level': forms.Select(attrs={'class': 'form-control'}),
+            'fifty_one_or_more_black_owned': forms.Select(attrs={'class': 'form-control'}),
+            'Black_Ownership': forms.TextInput(attrs={'class': 'form-control'}),
+            'thirty_or_more_black_woman_owned': forms.Select(attrs={'class': 'form-control'}),
+            'Black_Woman_Ownership': forms.TextInput(attrs={'class': 'form-control'}),
+            'Empowering_Supplier': forms.Select(attrs={'class': 'form-control'}),
+            'ESD_Recipient_Black_Owned_QSE_EME': forms.Select(attrs={'class': 'form-control'}),
+            'Designated_Group_Supplier': forms.Select(attrs={'class': 'form-control'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -111,20 +120,20 @@ class ProcurementForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Submit'))
 
         # Customize field labels
-        self.fields['supplier_name'].label = 'Supplier Name'
-        self.fields['reg_no'].label = 'Registration Number'
-        self.fields['expenditure_per_supplier_ledger_for_the_period_including_vat'].label = 'Expenditure per Supplier Ledger (including VAT)'
-        self.fields['expenditure_excluding_vat'].label = 'Expenditure (excluding VAT)'
-        self.fields['non_vat_item'].label = 'Non-VAT Item'
-        self.fields['supplier_classification'].label = 'Supplier Classification'
-        self.fields['bee_level'].label = 'BEE Level'
-        self.fields['fifty_one_percent_or_more_black_owned'].label = '51% or More Black Owned'
-        self.fields['black_ownership_percent'].label = 'Black Ownership Percentage'
-        self.fields['thirty_percent_or_more_black_woman_owned'].label = '30% or More Black Woman Owned'
-        self.fields['black_woman_ownership'].label = 'Black Woman Ownership'
-        self.fields['empowering_supplier'].label = 'Empowering Supplier'
-        self.fields['esd_recipient_and_black_owned_qse_or_eme_min_three_year_contract'].label = 'ESD Recipient and Black Owned QSE/EME (Minimum Three Year Contract)'
-        self.fields['designated_group_supplier'].label = 'Designated Group Supplier'
+        self.fields['Supplier_Name'].label = 'Supplier Name'
+        self.fields['Reg_No'].label = 'Registration Number'
+        self.fields['Expenditure_incl_VAT'].label = 'Expenditure per Supplier Ledger (including VAT)'
+        self.fields['Expenditure_excl_VAT'].label = 'Expenditure (excluding VAT)'
+        self.fields['Non_Vat_Item'].label = 'Non-VAT Item'
+        self.fields['Supplier_Classification'].label = 'Supplier Classification'
+        self.fields['BEE_Level'].label = 'BEE Level'
+        self.fields['fifty_one_or_more_black_owned'].label = '51% or More Black Owned'
+        self.fields['Black_Ownership'].label = 'Black Ownership %'
+        self.fields['thirty_or_more_black_woman_owned'].label = '30% or More Black Woman Owned'
+        self.fields['Black_Woman_Ownership'].label = 'Black Woman Ownership'
+        self.fields['Empowering_Supplier'].label = 'Empowering Supplier'
+        self.fields['ESD_Recipient_Black_Owned_QSE_EME'].label = 'ESD Recipient and Black Owned QSE/EME (Minimum Three Year Contract)'
+        self.fields['Designated_Group_Supplier'].label = 'Designated Group Supplier'
 
 
 class SkillsDevelopmentForm(forms.ModelForm):
@@ -132,31 +141,39 @@ class SkillsDevelopmentForm(forms.ModelForm):
         model = SkillsDevelopment
         fields = '__all__'
         widgets = {
-            'name_and_surname': forms.TextInput(attrs={'class': 'form-control'}),
-            'id_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'ID': forms.HiddenInput(),
+            'Company_Name': forms.TextInput(attrs={'class': 'form-control'}),
+            # 'Company_Name': forms.HiddenInput(),
+            'Ingest_date': forms.HiddenInput(),
+            'Table_Name': forms.HiddenInput(),
+            'Createdby_user': forms.HiddenInput(),
+            'Modifiedby_user': forms.HiddenInput(),
+            'Learner_Name': forms.TextInput(attrs={'class': 'form-control'}),
+            'Learner_Surname': forms.TextInput(attrs={'class': 'form-control'}),
+            'ID_Number': forms.TextInput(attrs={'class': 'form-control'}),
 
-            'race': forms.Select(attrs={'class': 'form-control'}),
-            'gender': forms.Select(attrs={'class': 'form-control'}),
-            'disabled': forms.Select(attrs={'class': 'form-control'}),
-            'training_course': forms.TextInput(attrs={'class': 'form-control'}),
-            'trainer_or_service_provider': forms.TextInput(attrs={'class': 'form-control'}),
-            'category': forms.Select(attrs={'class': 'form-control'}),
-            'internal_training': forms.Select(attrs={'class': 'form-control'}),
-            'abet': forms.Select(attrs={'class': 'form-control'}),
-            'abet_level': forms.Select(attrs={'class': 'form-control'}),
-            'core_and_or_critical_skills': forms.Select(attrs={'class': 'form-control'}),
-            'direct_expenditure_for_period_excl_vat': forms.TextInput(attrs={'class': 'form-control'}),
-            'additional_expenditure_for_the_period': forms.TextInput(attrs={'class': 'form-control'}),
-            'total_expenditure': forms.TextInput(attrs={'class': 'form-control'}),
-            'cost_to_company_annual_salary_for_b_c_d_students': forms.TextInput(attrs={'class': 'form-control'}),
-            'duration_of_training_in_hours_for_internal_training': forms.TextInput(attrs={'class': 'form-control'}),
-            'cost_to_company_annual_salary_for_internal_trainers_category_g': forms.TextInput(attrs={'class': 'form-control'}),
-            'number_of_participants_on_training_course_category_g': forms.TextInput(attrs={'class': 'form-control'}),
-            'designated_groups': forms.Select(attrs={'class': 'form-control'}),
-            'passed_qualifying_examinations': forms.Select(attrs={'class': 'form-control'}),
-            'spare': forms.Select(attrs={'class': 'form-control'}),
-            'unemployed_learner': forms.Select(attrs={'class': 'form-control'}),
-            'absorbed_learner': forms.Select(attrs={'class': 'form-control'}),
+            'Race': forms.Select(attrs={'class': 'form-control'}),
+            'Gender': forms.Select(attrs={'class': 'form-control'}),
+            'Disabled': forms.Select(attrs={'class': 'form-control'}),
+            'Training_Course': forms.TextInput(attrs={'class': 'form-control'}),
+            'Trainer_or_Service_Provider': forms.TextInput(attrs={'class': 'form-control'}),
+            'Category': forms.Select(attrs={'class': 'form-control'}),
+            'Internal_Training': forms.Select(attrs={'class': 'form-control'}),
+            'ABET': forms.Select(attrs={'class': 'form-control'}),
+            'ABET_Level': forms.Select(attrs={'class': 'form-control'}),
+            'Core_and_Critical_Skills': forms.Select(attrs={'class': 'form-control'}),
+            'Direct_Expenditure_for_Period_excl_Vat': forms.TextInput(attrs={'class': 'form-control'}),
+            'Additional_Expenditure_for_the_period': forms.TextInput(attrs={'class': 'form-control'}),
+            'Total_Expenditure': forms.TextInput(attrs={'class': 'form-control'}),
+            'Cost_to_company_annual_salary_internal_trainers_CategoryG': forms.TextInput(attrs={'class': 'form-control'}),
+            'Duration_of_training_for_Internal_Training': forms.TextInput(attrs={'class': 'form-control'}),
+            'Cost_to_company': forms.TextInput(attrs={'class': 'form-control'}),
+            'Number_of_Participants_on_Training_Course_CategoryG': forms.TextInput(attrs={'class': 'form-control'}),
+            'Designated_Groups': forms.Select(attrs={'class': 'form-control'}),
+            'Passed_Qualifying_Examinations': forms.Select(attrs={'class': 'form-control'}),
+            'Spare': forms.Select(attrs={'class': 'form-control'}),
+            'Unemployed_Learner': forms.Select(attrs={'class': 'form-control'}),
+            'Absorbed_Learner': forms.Select(attrs={'class': 'form-control'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -166,31 +183,32 @@ class SkillsDevelopmentForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Submit'))
 
         # Customize field labels
-        self.fields['name_and_surname'].label = 'Name And Surname'
-        self.fields['id_number'].label = 'ID Number'
+        self.fields['Learner_Name'].label = 'Learner Name'
+        self.fields['Learner_Surname'].label = 'Learner Surname'
+        self.fields['ID_Number'].label = 'ID Number'
 
-        self.fields['race'].label = 'Race'
-        self.fields['gender'].label = 'Gender'
-        self.fields['disabled'].label = 'Disabled'
-        self.fields['training_course'].label = 'Training Course'
-        self.fields['trainer_or_service_provider'].label = 'Trainer or Service Provider'
-        self.fields['category'].label = 'Category'
-        self.fields['internal_training'].label = 'Internal Training'
-        self.fields['abet'].label = 'ABET'
-        self.fields['abet_level'].label = 'ABET Level'
-        self.fields['core_and_or_critical_skills'].label = 'Core and/or Critical Skills'
-        self.fields['direct_expenditure_for_period_excl_vat'].label = 'Direct Expenditure for Period (Excl. VAT)'
-        self.fields['additional_expenditure_for_the_period'].label = 'Additional Expenditure for the Period'
-        self.fields['total_expenditure'].label = 'Total Expenditure'
-        self.fields['cost_to_company_annual_salary_for_b_c_d_students'].label = 'Cost to Company Annual Salary for B/C/D Students'
-        self.fields['duration_of_training_in_hours_for_internal_training'].label = 'Duration of Training (in hours) for Internal Training'
-        self.fields['cost_to_company_annual_salary_for_internal_trainers_category_g'].label = 'Cost to Company Annual Salary for Internal Trainers (Category G)'
-        self.fields['number_of_participants_on_training_course_category_g'].label = 'Number of Participants on Training Course (Category G)'
-        self.fields['designated_groups'].label = 'Designated Groups'
-        self.fields['passed_qualifying_examinations'].label = 'Passed Qualifying Examinations'
-        self.fields['spare'].label = 'Spare'
-        self.fields['unemployed_learner'].label = 'Unemployed Learner'
-        self.fields['absorbed_learner'].label = 'Absorbed Learner'
+        self.fields['Race'].label = 'Race'
+        self.fields['Gender'].label = 'Gender'
+        self.fields['Disabled'].label = 'Disabled'
+        self.fields['Training_Course'].label = 'Training Course'
+        self.fields['Trainer_or_Service_Provider'].label = 'Trainer or Service Provider'
+        self.fields['Category'].label = 'Category'
+        self.fields['Internal_Training'].label = 'Internal Training'
+        self.fields['ABET'].label = 'ABET'
+        self.fields['ABET_Level'].label = 'ABET Level'
+        self.fields['Core_and_Critical_Skills'].label = 'Core and/or Critical Skills'
+        self.fields['Direct_Expenditure_for_Period_excl_Vat'].label = 'Direct Expenditure for Period (Excl. VAT)'
+        self.fields['Additional_Expenditure_for_the_period'].label = 'Additional Expenditure for the Period'
+        self.fields['Total_Expenditure'].label = 'Total Expenditure'
+        self.fields['Cost_to_company'].label = 'Cost to Company Annual Salary for B/C/D Students'
+        self.fields['Duration_of_training_for_Internal_Training'].label = 'Duration of Training (in hours) for Internal Training'
+        self.fields['Cost_to_company_annual_salary_internal_trainers_CategoryG'].label = 'Cost to Company Annual Salary for Internal Trainers (Category G)'
+        self.fields['Number_of_Participants_on_Training_Course_CategoryG'].label = 'Number of Participants on Training Course (Category G)'
+        self.fields['Designated_Groups'].label = 'Designated Groups'
+        self.fields['Passed_Qualifying_Examinations'].label = 'Passed Qualifying Examinations'
+        self.fields['Spare'].label = 'Spare'
+        self.fields['Unemployed_Learner'].label = 'Unemployed Learner'
+        self.fields['Absorbed_Learner'].label = 'Absorbed Learner'
 
 
 class BoardForm(forms.ModelForm):
@@ -198,15 +216,24 @@ class BoardForm(forms.ModelForm):
     class Meta:
         model = Board
         fields = '__all__'
-        widgets = {'name_and_surname': forms.TextInput(attrs={'class': 'form-control'}),
-                  'id_number': forms.TextInput(attrs={'class': 'form-control'}),
-                  'race': forms.Select(attrs={'class': 'form-control'}),
-                  'gender': forms.Select(attrs={'class': 'form-control'}),
-                  'disabled': forms.Select(attrs={'class': 'form-control'}),
-                  'job_title': forms.TextInput(attrs={'class': 'form-control'}),
-                  'voting_rights': forms.Select(attrs={'class': 'form-control'}),
-                  'executive_director': forms.Select(attrs={'class': 'form-control'}),
-                  'independent_non_Executive': forms.Select(attrs={'class': 'form-control'})}
+        widgets = {'Name': forms.TextInput(attrs={'class': 'form-control'}),
+                   'ID': forms.HiddenInput(),
+                   'Company_Name': forms.TextInput(attrs={'class': 'form-control'}),
+                   # 'Company_Name': forms.HiddenInput(),
+                   'Ingest_date': forms.HiddenInput(),
+                   'Table_Name': forms.HiddenInput(),
+                   'Createdby_user': forms.HiddenInput(),
+                   'Modifiedby_user': forms.HiddenInput(),
+                   'Surname': forms.TextInput(attrs={'class': 'form-control'}),
+                  'ID_Number': forms.TextInput(attrs={'class': 'form-control'}),
+                  'Race': forms.Select(attrs={'class': 'form-control'}),
+                  'Gender': forms.Select(attrs={'class': 'form-control'}),
+                  'Disabled': forms.Select(attrs={'class': 'form-control'}),
+                  'Job_Title': forms.TextInput(attrs={'class': 'form-control'}),
+                   'Position_Occupational_Level': forms.TextInput(attrs={'class': 'form-control'}),
+                  'Voting_Rights': forms.Select(attrs={'class': 'form-control'}),
+                  'Executive_Director': forms.Select(attrs={'class': 'form-control'}),
+                  'Independent_Non_Executive': forms.Select(attrs={'class': 'form-control'})}
 
     def __init__(self, *args, **kwargs):
         super(BoardForm, self).__init__(*args, **kwargs)
@@ -214,37 +241,48 @@ class BoardForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Submit'))
 
-        self.fields['name_and_surname'].label = 'Name And Surname'
-        self.fields['gender'].label = 'Gender'
-        self.fields['disabled'].label = 'Disabled'
-        self.fields['id_number'].label = 'ID Number'
-        self.fields['job_title'].label = 'Job Title'
-        self.fields['voting_rights'].label = 'Voting Rights'
-        self.fields['executive_director'].label = 'Executive Director'
-        self.fields['race'].label = 'Race'
-        self.fields['independent_non_Executive'].label = 'Independent Non-Executive'
+        self.fields['Name'].label = 'Name'
+        self.fields['Surname'].label = 'Surname'
+        self.fields['Gender'].label = 'Gender'
+        self.fields['Disabled'].label = 'Disabled'
+        self.fields['ID_Number'].label = 'ID Number'
+        self.fields['Job_Title'].label = 'Job Title'
+        self.fields['Position_Occupational_Level'].label = 'Position Occupational Level'
+        self.fields['Voting_Rights'].label = 'Voting Rights'
+        self.fields['Executive_Director'].label = 'Executive Director'
+        self.fields['Race'].label = 'Race'
+        self.fields['Independent_Non_Executive'].label = 'Independent Non-Executive'
 
 class OwnershipForm(forms.ModelForm):
     class Meta:
         model = Ownership
         fields = '__all__'
         widgets = {
-            'name_and_surname': forms.TextInput(attrs={'class': 'form-control'}),
-            'id_number': forms.TextInput(attrs={'class': 'form-control'}),
-            'race': forms.Select(attrs={'class': 'form-control'}),
-            'gender': forms.Select(attrs={'class': 'form-control'}),
-            'disabled': forms.Select(attrs={'class': 'form-control'}),
-            'foreign': forms.Select(attrs={'class': 'form-control'}),
-            'designated_groups': forms.Select(attrs={'class': 'form-control'}),
-            'youth': forms.Select(attrs={'class': 'form-control'}),
-            'unemployed': forms.Select(attrs={'class': 'form-control'}),
-            'living_in_rural_areas': forms.Select(attrs={'class': 'form-control'}),
-            'military_veteran': forms.Select(attrs={'class': 'form-control'}),
-            'economic_interest': forms.Select(attrs={'class': 'form-control'}),
-            'voting_rights': forms.Select(attrs={'class': 'form-control'}),
-            'chartered_accountant': forms.Select(attrs={'class': 'form-control'}),
-            'outstanding_debt_by_black_participants': forms.TextInput(attrs={'class': 'form-control'}),
-            'ownership_model': forms.TextInput(attrs={'class': 'form-control'}),
+            'Company_Name': forms.TextInput(attrs={'class': 'form-control'}),
+            'ID': forms.HiddenInput(),
+            # 'Company_Name': forms.HiddenInput(),
+            'Ingest_date': forms.HiddenInput(),
+            'Table_Name': forms.HiddenInput(),
+            'Createdby_user': forms.HiddenInput(),
+            'Modifiedby_user': forms.HiddenInput(),
+            'Surname': forms.TextInput(attrs={'class': 'form-control'}),
+            'Name': forms.TextInput(attrs={'class': 'form-control'}),
+            'ID_Number': forms.TextInput(attrs={'class': 'form-control'}),
+            'Race': forms.Select(attrs={'class': 'form-control'}),
+            'Gender': forms.Select(attrs={'class': 'form-control'}),
+            'Disabled': forms.Select(attrs={'class': 'form-control'}),
+            'New_Entrant': forms.Select(attrs={'class': 'form-control'}),
+            'Foreign': forms.Select(attrs={'class': 'form-control'}),
+            'Designated_Groups': forms.Select(attrs={'class': 'form-control'}),
+            'Youth': forms.Select(attrs={'class': 'form-control'}),
+            'Unemployed': forms.Select(attrs={'class': 'form-control'}),
+            'Living_in_Rural_Areas': forms.Select(attrs={'class': 'form-control'}),
+            'Military_Veteran': forms.Select(attrs={'class': 'form-control'}),
+            'Economic_Interest': forms.Select(attrs={'class': 'form-control'}),
+            'Voting_Rights': forms.Select(attrs={'class': 'form-control'}),
+            'Chartered_Accountant': forms.Select(attrs={'class': 'form-control'}),
+            'Outstanding_Debt_by_Black_Participants': forms.TextInput(attrs={'class': 'form-control'}),
+            'Ownership_Type': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -254,22 +292,23 @@ class OwnershipForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Submit'))
 
         # Customize field labels
-        self.fields['name_and_surname'].label = 'Name And Surname'
-        self.fields['id_number'].label = 'ID Number'
-        self.fields['race'].label = 'Race'
-        self.fields['gender'].label = 'Gender'
-        self.fields['disabled'].label = 'Disabled'
-        self.fields['foreign'].label = 'Foreign'
-        self.fields['designated_groups'].label = 'Designated Groups'
-        self.fields['youth'].label = 'Youth'
-        self.fields['unemployed'].label = 'Unemployed'
-        self.fields['living_in_rural_areas'].label = 'Living in Rural Areas'
-        self.fields['military_veteran'].label = 'Military Veteran'
-        self.fields['economic_interest'].label = 'Economic Interest'
-        self.fields['voting_rights'].label = 'Voting Rights'
-        self.fields['chartered_accountant'].label = 'Chartered Accountant'
-        self.fields['outstanding_debt_by_black_participants'].label = 'Outstanding Debt by Black Participants'
-        self.fields['ownership_model'].label = 'Ownership Model'
+        self.fields['Surname'].label = 'Name And Surname'
+        self.fields['Name'].label = 'Name And Surname'
+        self.fields['ID_Number'].label = 'ID Number'
+        self.fields['Race'].label = 'Race'
+        self.fields['Gender'].label = 'Gender'
+        self.fields['Disabled'].label = 'Disabled'
+        self.fields['Foreign'].label = 'Foreign'
+        self.fields['Designated_Groups'].label = 'Designated Groups'
+        self.fields['Youth'].label = 'Youth'
+        self.fields['Unemployed'].label = 'Unemployed'
+        self.fields['Living_in_Rural_Areas'].label = 'Living in Rural Areas'
+        self.fields['Military_Veteran'].label = 'Military Veteran'
+        self.fields['Economic_Interest'].label = 'Economic Interest'
+        self.fields['Voting_Rights'].label = 'Voting Rights'
+        self.fields['Chartered_Accountant'].label = 'Chartered Accountant'
+        self.fields['Outstanding_Debt_by_Black_Participants'].label = 'Outstanding Debt by Black Participants'
+        self.fields['Ownership_Type'].label = 'Ownership Model'
 
 
 class SocioEconomicDevelopmentForm(forms.ModelForm):
@@ -277,6 +316,10 @@ class SocioEconomicDevelopmentForm(forms.ModelForm):
         model = SocioEconomicDevelopment
         fields = '__all__'
         widgets = {
+            'Company_Name': forms.TextInput(attrs={'class': 'form-control'}),
+
+            'Createdby_user': forms.HiddenInput(),
+            'Modifiedby_user': forms.HiddenInput(),
             'ID': forms.HiddenInput(),
             'Ingest_date': forms.HiddenInput(),
             'Table_Name': forms.HiddenInput(),
@@ -303,7 +346,7 @@ class SocioEconomicDevelopmentForm(forms.ModelForm):
         # self.fields['contribution_type'].label = 'Contribution Type'
         # self.fields['description_of_contribution'].label = 'Description of Contribution'
         # self.fields['structured_sed_project'].label = 'Structured SED Project'
-        # self.fields['date_of_contribution'].label = 'Date of Contribution'
+        self.fields['Date_of_Contribution'].label = 'Date of Contribution (yyyy/mm/dd)'
         # self.fields['amount_of_contribution'].label = 'Amount of Contribution'
 
 
