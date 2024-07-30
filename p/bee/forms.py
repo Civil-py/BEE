@@ -292,8 +292,8 @@ class OwnershipForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Submit'))
 
         # Customize field labels
-        self.fields['Surname'].label = 'Name And Surname'
-        self.fields['Name'].label = 'Name And Surname'
+        self.fields['Surname'].label = 'Surname'
+        self.fields['Name'].label = 'Name'
         self.fields['ID_Number'].label = 'ID Number'
         self.fields['Race'].label = 'Race'
         self.fields['Gender'].label = 'Gender'
@@ -346,7 +346,7 @@ class SocioEconomicDevelopmentForm(forms.ModelForm):
         # self.fields['contribution_type'].label = 'Contribution Type'
         # self.fields['description_of_contribution'].label = 'Description of Contribution'
         # self.fields['structured_sed_project'].label = 'Structured SED Project'
-        self.fields['Date_of_Contribution'].label = 'Date of Contribution (yyyy/mm/dd)'
+        self.fields['Date_of_Contribution'].label = 'Date of Contribution (yyyy-mm-dd)'
         # self.fields['amount_of_contribution'].label = 'Amount of Contribution'
 
 
