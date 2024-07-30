@@ -226,13 +226,13 @@ def get_form(choice, post_data=None):
     if choice == "Employment Equity":
         return EmploymentEquityForm(post_data, initial={'ID':  str(uuid4()).split('-')[2], 'Ingest_date': datetime.datetime.today().date(), 'Table_Name': "in_EmploymentEquity" })
     if choice == "Ownership":
-        return OwnershipForm(post_data)
+        return OwnershipForm(post_data, initial={'ID':  str(uuid4()).split('-')[2], 'Ingest_date': datetime.datetime.today().date(), 'Table_Name': "in_Ownership" })
     if choice == "Skills Development":
-        return SkillsDevelopmentForm(post_data)
+        return SkillsDevelopmentForm(post_data, initial={'ID':  str(uuid4()).split('-')[2], 'Ingest_date': datetime.datetime.today().date(), 'Table_Name': "in_SkillsDevelopment" })
     if choice == "Procurement":
-        return ProcurementForm(post_data)
+        return ProcurementForm(post_data, initial={'ID':  str(uuid4()).split('-')[2], 'Ingest_date': datetime.datetime.today().date(), 'Table_Name': "in_Procurement" })
     if choice == "Board":
-        return BoardForm(post_data)
+        return BoardForm(post_data, initial={'ID':  str(uuid4()).split('-')[2], 'Ingest_date': datetime.datetime.today().date(), 'Table_Name': "in_Ownership" })
     if choice == "Socio Economic Development":
         return SocioEconomicDevelopmentForm(post_data, initial={'ID':  str(uuid4()).split('-')[2], 'Ingest_date': datetime.datetime.today().date(), 'Table_Name': "in_SocioEconomicDevelopment" })
     if choice == "Financial Information":
