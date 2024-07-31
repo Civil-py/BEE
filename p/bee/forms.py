@@ -174,7 +174,8 @@ class SkillsDevelopmentForm(forms.ModelForm):
         self.fields['Learner_Name'].label = 'Learner Name'
         self.fields['Learner_Surname'].label = 'Learner Surname'
         self.fields['ID_Number'].label = 'ID Number'
-
+        self.fields['End_Date'].label = 'End Date (yyyy-mm-dd)'
+        self.fields['Date_of_Training_Program'].label = 'Date of Training Program (yyyy-mm-dd)'
         self.fields['Race'].label = 'Race'
         self.fields['Gender'].label = 'Gender'
         self.fields['Disabled'].label = 'Disabled'
