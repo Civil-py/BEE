@@ -34,31 +34,30 @@ class UserForm(forms.ModelForm):
         return bee_user
 
 class EmploymentEquityForm(forms.ModelForm):
-
     class Meta:
         model = EmploymentEquity
         fields = '__all__'
-        widgets = {'Name': forms.TextInput(attrs={'class': 'form-control'}),
-                   'ID': forms.HiddenInput(),
-                   'Company_Name': forms.TextInput(attrs={'class': 'form-control'}),
-                   # 'Company_Name': forms.HiddenInput(),
-                   'Ingest_date': forms.HiddenInput(),
-                   'Table_Name': forms.HiddenInput(),
-                   'Createdby_user': forms.HiddenInput(),
-                   'Surname': forms.TextInput(attrs={'class': 'form-control'}),
-                   'Id_Number': forms.TextInput(attrs={'class': 'form-control'}),
-                   'Job_title': forms.TextInput(attrs={'class': 'form-control'}),
-                   'Gross_Monthly_Salary': forms.TextInput(attrs={'class': 'form-control'}),
-                   'Race': forms.Select(attrs={'class': 'form-control'}),
-                    'Gender': forms.Select(attrs={'class': 'form-control'}),
-                    'Disabled': forms.Select(attrs={'class': 'form-control'}),
-                    'Description_of_disability': forms.TextInput(attrs={'class': 'form-control'}),
-                    'Occupational_Level': forms.Select(attrs={'class': 'form-control'}),
-                    'Foreign':forms.Select(attrs={'class': 'form-control'}),
-                    'Pilot': forms.Select(attrs={'class': 'form-control'}),
-                    'Technician': forms.Select(attrs={'class': 'form-control'}),
-                   'Black_Youth' : forms.Select(attrs={'class': 'form-control'})}
-
+        widgets = {
+            'Name': forms.TextInput(attrs={'class': 'form-control'}),
+            'ID': forms.HiddenInput(),
+            'Company_Name': forms.TextInput(attrs={'class': 'form-control'}),
+            'Ingest_date': forms.HiddenInput(),
+            'Table_Name': forms.HiddenInput(),
+            'Createdby_user': forms.HiddenInput(),
+            'Surname': forms.TextInput(attrs={'class': 'form-control'}),
+            'Id_Number': forms.TextInput(attrs={'class': 'form-control'}),
+            'Job_title': forms.TextInput(attrs={'class': 'form-control'}),
+            'Gross_Monthly_Salary': forms.TextInput(attrs={'class': 'form-control'}),
+            'Race': forms.Select(attrs={'class': 'form-control'}),
+            'Gender': forms.Select(attrs={'class': 'form-control'}),
+            'Disabled': forms.Select(attrs={'class': 'form-control'}),
+            'Description_of_disability': forms.TextInput(attrs={'class': 'form-control'}),
+            'Occupational_Level': forms.Select(attrs={'class': 'form-control'}),
+            'Foreign': forms.Select(attrs={'class': 'form-control'}),
+            'Pilot': forms.Select(attrs={'class': 'form-control'}),
+            'Technician': forms.Select(attrs={'class': 'form-control'}),
+            'Black_Youth': forms.Select(attrs={'class': 'form-control'}),
+        }
 
     def __init__(self, *args, **kwargs):
         super(EmploymentEquityForm, self).__init__(*args, **kwargs)
@@ -66,22 +65,9 @@ class EmploymentEquityForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Submit'))
 
-        # # Customize field labels
-        # self.fields['Name'].label = 'Name'
-        # self.fields['surname'].label = 'Surname'
         self.fields['Id_Number'].label = 'ID Number'
         self.fields['Gross_Monthly_Salary'].label = 'Gross Monthly Salary (R)'
-        # self.fields['race'].label = 'Race'
-        # self.fields['gender'].label = 'Gender'
-        # self.fields['disabled'].label = 'Disabled'
-        # self.fields['description_of_disability'].label = 'Description Of Disability'
-        # self.fields['occupational_level'].label = 'Occupational Level'
-        # self.fields['foreign'].label = 'Foreign'
-        # self.fields['pilot'].label = 'Pilot'
-        # self.fields['technician'].label = 'Technician'
-        self.fields[
-            'Black_Youth'].label = 'Black Youth (as defined by the National Youth Commission Act of 1996)'
-
+        self.fields['Black_Youth'].label = 'Black Youth (as defined by the National Youth Commission Act of 1996)'
 
 
 
@@ -151,6 +137,8 @@ class SkillsDevelopmentForm(forms.ModelForm):
             'Learner_Name': forms.TextInput(attrs={'class': 'form-control'}),
             'Learner_Surname': forms.TextInput(attrs={'class': 'form-control'}),
             'ID_Number': forms.TextInput(attrs={'class': 'form-control'}),
+            'End_Date': forms.TextInput(attrs={'class': 'form-control'}),
+            'Date_of_Training_Program': forms.TextInput(attrs={'class': 'form-control'}),
 
             'Race': forms.Select(attrs={'class': 'form-control'}),
             'Gender': forms.Select(attrs={'class': 'form-control'}),
@@ -162,7 +150,7 @@ class SkillsDevelopmentForm(forms.ModelForm):
             'ABET': forms.Select(attrs={'class': 'form-control'}),
             'ABET_Level': forms.Select(attrs={'class': 'form-control'}),
             'Core_and_Critical_Skills': forms.Select(attrs={'class': 'form-control'}),
-            'Direct_Expenditure_for_Period_excl_Vat': forms.TextInput(attrs={'class': 'form-control'}),
+            'Direct_Expenditure_for_Period_excl_VAT': forms.TextInput(attrs={'class': 'form-control'}),
             'Additional_Expenditure_for_the_period': forms.TextInput(attrs={'class': 'form-control'}),
             'Total_Expenditure': forms.TextInput(attrs={'class': 'form-control'}),
             'Cost_to_company_annual_salary_internal_trainers_CategoryG': forms.TextInput(attrs={'class': 'form-control'}),
@@ -197,7 +185,7 @@ class SkillsDevelopmentForm(forms.ModelForm):
         self.fields['ABET'].label = 'ABET'
         self.fields['ABET_Level'].label = 'ABET Level'
         self.fields['Core_and_Critical_Skills'].label = 'Core and/or Critical Skills'
-        self.fields['Direct_Expenditure_for_Period_excl_Vat'].label = 'Direct Expenditure for Period (Excl. VAT)'
+        self.fields['Direct_Expenditure_for_Period_excl_VAT'].label = 'Direct Expenditure for Period (Excl. VAT)'
         self.fields['Additional_Expenditure_for_the_period'].label = 'Additional Expenditure for the Period'
         self.fields['Total_Expenditure'].label = 'Total Expenditure'
         self.fields['Cost_to_company'].label = 'Cost to Company Annual Salary for B/C/D Students'
