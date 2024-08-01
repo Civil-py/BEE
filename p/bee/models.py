@@ -146,7 +146,7 @@ class SkillsDevelopment(models.Model):
     Trainer_or_Service_Provider = models.CharField(max_length=64, null=True, blank=True)
     Date_of_Training_Program = models.CharField(max_length=64, null=True, blank=True)
     End_Date = models.CharField(max_length=64, null=True, blank=True)
-    Category = models.CharField(max_length=64, null=True, choices=CATEGORIES, blank=True)
+    Category = models.CharField(max_length=64, null=True, choices=CATEGORIES)
     Internal_Training =  models.CharField(max_length=64, null=True, choices=YES_NO, blank=True)
     ABET = models.CharField(max_length=64, null=True, choices=YES_NO, blank=True)
     ABET_Level = models.CharField(max_length=64, null=True, choices=ABET_LEVELS, blank=True)
