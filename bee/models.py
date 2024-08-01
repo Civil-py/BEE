@@ -154,7 +154,7 @@ class SkillsDevelopment(models.Model):
     Direct_Expenditure_for_Period_excl_VAT = models.CharField(null=True, max_length=64, blank=True)
 
     Additional_Expenditure_for_the_period = models.CharField(null=True, max_length=64, blank=True)
-    Total_Expenditure = models.CharField(null=True, max_length=64, blank=True)
+    Total_Expenditure = models.CharField(null=True, max_length=64)
     Cost_to_company_annual_salary_internal_trainers_CategoryG = models.CharField(null=True, max_length=64, blank=True)
     Duration_of_training_for_Internal_Training = models.CharField(null=True, max_length=64, blank=True)
     Cost_to_company= models.CharField(null=True, max_length=64, blank=True)
