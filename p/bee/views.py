@@ -133,19 +133,19 @@ def login_view(request):
         return render(request, 'bee/landingpage.html')
 
 
-def login(request, user):
-    if request.method == "POST":
-        user = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            messages.success(request, f'Welcome back {user}!')
-            return redirect('index')
-        else:
-            return render(request, 'bee/landingpage.html', {'error': 'Invalid username or password'})
-    else:
-        return render(request, 'bee/landingpage.html')
+# def login(request, user):
+#     if request.method == "POST":
+#         user = request.POST['username']
+#         password = request.POST['password']
+#         user = authenticate(request, username=username, password=password)
+#         if user is not None:
+#             login(request, user)
+#             messages.success(request, f'Welcome back {user}!')
+#             return redirect('index')
+#         else:
+#             return render(request, 'bee/landingpage.html', {'error': 'Invalid username or password'})
+#     else:
+#         return render(request, 'bee/landingpage.html')
 
 
 def cognito_callback(request):
@@ -267,6 +267,7 @@ def landingpage(request):
 
 
 
+
 def index(request):
     return render(request,"bee/index.html")
 
@@ -301,7 +302,6 @@ def get_form(choice, post_data=None):
     if choice == "Valuation":
         return ValuationForm(post_data)
     return None
-
 
 
 
