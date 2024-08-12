@@ -126,11 +126,11 @@ def login_view(request):
                 return redirect('index')
             else:
                 # Handle case where user_info is null or not found
-                return render(request, 'bee/landingpage.htm', {'error': 'Unable to retrieve user information from Cognito.'})
+                return render(request, 'bee/landingpage.html', {'error': 'Unable to retrieve user information from Cognito.'})
         else:
-            return render(request, 'bee/landingpage.htm', {'error': 'Invalid username or password'})
+            return render(request, 'bee/landingpage.html', {'error': 'Invalid username or password'})
     else:
-        return render(request, 'bee/landingpage.htm')
+        return render(request, 'bee/landingpage.html')
 
 
 def login(request, user):
