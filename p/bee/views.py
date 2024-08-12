@@ -32,7 +32,7 @@ def cognito_login(request):
 
 
 
-
+#
 # def cognito_authenticate(username, password):
 #     client = boto3.client('cognito-idp', region_name=settings.AWS_COGNITO_REGION)
 #
@@ -95,7 +95,7 @@ def login_view(request):
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
-        response = cognito_authenticate(username, password)
+        response = cognito_authenticate(request, username)
 
         if response:
             user_info = get_cognito_user_info(request, username)
@@ -267,7 +267,7 @@ def landingpage(request):
 
 
 
-
+@login_required(login_url='https://dominateconsulting.auth.af-south-1.amazoncognito.com/login?client_id=1qa3ngvpha1hcge9arintssh30&response_type=code&scope=email+openid&redirect_uri=https%3A%2F%2Fec2-13-247-145-14.af-south-1.compute.amazonaws.com%3A8000%2Fbee%2Fhome')
 def index(request):
     return render(request,"bee/index.html")
 
@@ -305,7 +305,7 @@ def get_form(choice, post_data=None):
 
 
 
-
+@login_required(login_url='https://dominateconsulting.auth.af-south-1.amazoncognito.com/login?client_id=1qa3ngvpha1hcge9arintssh30&response_type=code&scope=email+openid&redirect_uri=https%3A%2F%2Fec2-13-247-145-14.af-south-1.compute.amazonaws.com%3A8000%2Fbee%2Fhome')
 def inputs(request, choice):
     if request.method == "POST":
         form = get_form(choice, request.POST)
