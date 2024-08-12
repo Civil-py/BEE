@@ -7,8 +7,9 @@ urlpatterns = [
 path("", views.landingpage, name="landingpage"),
 path("register", views.register, name="register"),
 
-path('cognito/login/', views.cognito_login, name='cognito_login'),
+
     path('cognito/callback/', views.cognito_callback, name='cognito_callback'),
+path('user-info/<str:username>/', views.get_cognito_user_info, name='user-info'),
 
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
