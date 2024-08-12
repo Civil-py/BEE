@@ -14,6 +14,6 @@ path('user-info/<str:username>/', views.get_cognito_user_info, name='user-info')
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
 
-path("Inputs/<str:choice>", views.inputs, name="inputs"),
+path("home/Inputs/<str:choice>", views.inputs, name="inputs"),
 path("Financial-Inputs/<str:choice>", views.financial_inputs, name="financial_inputs"),
 ]
