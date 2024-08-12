@@ -6,9 +6,7 @@ from .models import User, EmploymentEquity, Procurement, SkillsDevelopment, Owne
 from .forms import UserForm, EmploymentEquityForm, ProcurementForm,SkillsDevelopmentForm, OwnershipForm, BoardForm, SocioEconomicDevelopmentForm, FinacialInformationForm, FinacialSkillsDevelopmentForm, NetProfit_ED_ESDForm, ValuationForm
 from django.contrib import messages
 import boto3
-
 from django.conf import settings
-
 import requests
 from jose import jwt
 import json
@@ -22,40 +20,76 @@ import datetime
 
 
 
-def cognito_login(request):
-    cognito_login_url = (
-        f"https://dominateconsulting.auth.{settings.AWS_COGNITO_REGION}.amazoncognito.com/login?"
-        f"client_id={settings.AWS_COGNITO_APP_CLIENT_ID}&"
-        f"response_type=code&"
-        f"scope=email+openid+phone&"
-        f"redirect_uri={settings.AWS_COGNITO_REDIRECT_URL}"
+# def cognito_login(request):
+#     cognito_login_url = (
+#         f"https://dominateconsulting.auth.{settings.AWS_COGNITO_REGION}.amazoncognito.com/login?"
+#         f"client_id={settings.AWS_COGNITO_APP_CLIENT_ID}&"
+#         f"response_type=code&"
+#         f"scope=email+openid+phone&"
+#         f"redirect_uri={settings.AWS_COGNITO_REDIRECT_URL}"
+#     )
+#     return redirect(cognito_login_url)
+
+
+
+
+# def cognito_authenticate(username, password):
+#     client = boto3.client('cognito-idp', region_name=settings.AWS_COGNITO_REGION)
+#
+#     try:
+#         response = client.initiate_auth(
+#             AuthFlow='USER_PASSWORD_AUTH',
+#             AuthParameters={
+#                 'USERNAME': username,
+#                 'PASSWORD': password
+#             },
+#             ClientId=settings.AWS_COGNITO_APP_CLIENT_ID
+#         )
+#         return response
+#     except client.exceptions.NotAuthorizedException:
+#         return None
+#     except client.exceptions.UserNotFoundException:
+#         return None
+#     except Exception as e:
+#         print(f"Unexpected error: {e}")
+#         return None
+
+def get_cognito_user_info(request, username):
+    # Initialize the Cognito client using the settings from your settings.py
+    client = boto3.client(
+        'cognito-idp',
+        region_name=settings.AWS_COGNITO_REGION
     )
-    return redirect(cognito_login_url)
-
-
-
-
-def cognito_authenticate(username, password):
-    client = boto3.client('cognito-idp', region_name=settings.AWS_COGNITO_REGION)
 
     try:
-        response = client.initiate_auth(
-            AuthFlow='USER_PASSWORD_AUTH',
-            AuthParameters={
-                'USERNAME': username,
-                'PASSWORD': password
-            },
-            ClientId=settings.AWS_COGNITO_APP_CLIENT_ID
+        # Get user information from Cognito
+        response = client.admin_get_user(
+            UserPoolId=settings.AWS_COGNITO_USER_POOL_ID,
+            Username=username
         )
-        return response
-    except client.exceptions.NotAuthorizedException:
-        return None
-    except client.exceptions.UserNotFoundException:
-        return None
-    except Exception as e:
-        print(f"Unexpected error: {e}")
-        return None
 
+        # Extract and format the user attributes
+        user_attributes = {
+            attribute['Name']: attribute['Value']
+            for attribute in response['UserAttributes']
+        }
+
+        return JsonResponse({
+            'status': 'success',
+            'data': user_attributes
+        })
+
+    except client.exceptions.UserNotFoundException:
+        return JsonResponse({
+            'status': 'error',
+            'message': f'User {username} not found.'
+        }, status=404)
+
+    except Exception as e:
+        return JsonResponse({
+            'status': 'error',
+            'message': str(e)
+        }, status=500)
 
 def login_view(request):
     if request.method == "POST":
@@ -64,16 +98,39 @@ def login_view(request):
         response = cognito_authenticate(username, password)
 
         if response:
-            request.session['username'] = username
-            request.session['id_token'] = response['AuthenticationResult']['IdToken']
-            request.session['access_token'] = response['AuthenticationResult']['AccessToken']
-            request.session['refresh_token'] = response['AuthenticationResult']['RefreshToken']
-            messages.success(request, f'Welcome back {username}!')
-            return redirect('index')
+            user_info = get_cognito_user_info(request, username)
+
+            # Check if user_info is not null
+            if user_info['status'] == 'success':
+                # Extract email or username from user_info to use as the identifier
+                email = user_info['data'].get('email', username)
+
+                # Create or get the Django user for this session
+                user, created = User.objects.get_or_create(username=email, defaults={'email': email})
+
+                # If the user was just created, you may want to set additional fields or even a random password
+                if created:
+                    user.set_unusable_password()  # Set an unusable password if you don't want to set a real one
+                    user.save()
+
+                # Log the user in for the session
+                login(request, user)
+
+                # Store Cognito tokens in the session for further use if needed
+                request.session['username'] = username
+                request.session['id_token'] = response['AuthenticationResult']['IdToken']
+                request.session['access_token'] = response['AuthenticationResult']['AccessToken']
+                request.session['refresh_token'] = response['AuthenticationResult']['RefreshToken']
+
+                messages.success(request, f'Welcome back {username}!')
+                return redirect('index')
+            else:
+                # Handle case where user_info is null or not found
+                return render(request, 'bee/landingpage.htm', {'error': 'Unable to retrieve user information from Cognito.'})
         else:
-            return render(request, 'bee/login.html', {'error': 'Invalid username or password'})
+            return render(request, 'bee/landingpage.htm', {'error': 'Invalid username or password'})
     else:
-        return render(request, 'bee/login.html')
+        return render(request, 'bee/landingpage.htm')
 
 
 def login(request, user):
@@ -113,7 +170,8 @@ def cognito_callback(request):
         request.session['email'] = claims['email']
         messages.success(request, f"Welcome {claims['email']}")
         return redirect('index')
-    return redirect('login')
+    return redirect('landingpage')
+
 
 def sync_cognito_user(user_info):
 
@@ -209,7 +267,7 @@ def landingpage(request):
 
 
 
-@login_required(login_url='https://dominateconsulting.auth.af-south-1.amazoncognito.com/login?client_id=1qa3ngvpha1hcge9arintssh30&response_type=code&scope=email+openid&redirect_uri=https%3A%2F%2Fec2-13-247-145-14.af-south-1.compute.amazonaws.com%3A8000%2Fbee%2Fhome')
+
 def index(request):
     return render(request,"bee/index.html")
 
@@ -247,7 +305,7 @@ def get_form(choice, post_data=None):
 
 
 
-
+@login_required(login_url='https://dominateconsulting.auth.af-south-1.amazoncognito.com/login?client_id=1qa3ngvpha1hcge9arintssh30&response_type=code&scope=email+openid&redirect_uri=https%3A%2F%2Fec2-13-247-145-14.af-south-1.compute.amazonaws.com%3A8000%2Fbee%2Fhome')
 def inputs(request, choice):
     if request.method == "POST":
         form = get_form(choice, request.POST)
