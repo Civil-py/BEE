@@ -12,7 +12,8 @@ path("register", views.register, name="register"),
 path('user-info/<str:username>/', views.get_cognito_user_info, name='user-info'),
 
     path('bee/home', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
+path('bee/login', views.login_user, name='login_user'),
+    path('logout/', views.cognito_logout, name='cognito_logout'),
 
 path("home/Inputs/<str:choice>", views.inputs, name="inputs"),
 path("Financial-Inputs/<str:choice>", views.financial_inputs, name="financial_inputs"),
