@@ -26,7 +26,7 @@ AWS_COGNITO_REGION = 'af-south-1'
 AWS_COGNITO_USER_POOL_ID = 'af-south-1_3ogEVC8W6'
 AWS_COGNITO_APP_CLIENT_ID = '1qa3ngvpha1hcge9arintssh30'
 AWS_COGNITO_APP_CLIENT_SECRET = '8u4alc94vr3pdn67tbal25eu1pk4colfs2t9g9id6ato7o90ts1'
-AWS_COGNITO_REDIRECT_URL = 'https://ec2-13-247-145-14.af-south-1.compute.amazonaws.com:8000/bee/home'
+AWS_COGNITO_REDIRECT_URL = 'https://bee-xj6g.onrender.com/bee/bee/cognito/callback/'
 AWS_COGNITO_LOGOUT_URL = 'https://localhost:8000/cognito/logout/'
 AWS_COGNITO_JWK_URL = f'https://cognito-idp.{AWS_COGNITO_REGION}.amazonaws.com/{AWS_COGNITO_USER_POOL_ID}/.well-known/jwks.json'
 
