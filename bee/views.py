@@ -91,47 +91,41 @@ def get_cognito_user_info(request, username):
             'message': str(e)
         }, status=500)
 
+
 def login_view(request):
-    messages.success(request, f'it hit here')
-    if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
-        # response = cognito_authenticate(request, username)
+    # Ensure this view is triggered by adding a success message
+    messages.success(request, 'login_view triggered!')
 
-        if response:
-            user_info = get_cognito_user_info(request, username)
+    # Get username from session, which should have been set in the cognito_callback
+    username = request.session.get('username')
 
-            # Check if user_info is not null
-            if user_info['status'] == 'success':
-                # Extract email or username from user_info to use as the identifier
-                email = user_info['data'].get('email', username)
+    # Check if username is present in the session
+    if username:
+        # You should also have access to the tokens in the session if needed
+        id_token = request.session.get('id_token')
+        access_token = request.session.get('access_token')
 
-                # Create or get the Django user for this session
-                user, created = User.objects.get_or_create(username=email, defaults={'email': email})
+        # Retrieve user info from Cognito
+        user_info = get_cognito_user_info(request, username)
 
-                # If the user was just created, you may want to set additional fields or even a random password
-                if created:
-                    user.set_unusable_password()  # Set an unusable password if you don't want to set a real one
-                    user.save()
+        if user_info['status'] == 'success':
+            email = user_info['data'].get('email', username)
+            user, created = User.objects.get_or_create(username=email, defaults={'email': email})
 
-                # Log the user in for the session
-                login_user(request, user)
+            if created:
+                user.set_unusable_password()  # Set unusable password if no actual password is needed
+                user.save()
 
-                # Store Cognito tokens in the session for further use if needed
-                request.session['username'] = username
-                request.session['id_token'] = response['AuthenticationResult']['IdToken']
-                request.session['access_token'] = response['AuthenticationResult']['AccessToken']
-                request.session['refresh_token'] = response['AuthenticationResult']['RefreshToken']
+            # Log the user in for the session
+            login_user(request, user)
 
-                messages.success(request, f'Welcome back {username}!')
-                return redirect('index')
-            else:
-                # Handle case where user_info is null or not found
-                return render(request, 'bee/landingpage.html', {'error': 'Unable to retrieve user information from Cognito.'})
+            messages.success(request, f'Welcome back, {username}!')
+            return redirect('index')
         else:
-            return render(request, 'bee/landingpage.html', {'error': 'Invalid username or password'})
+            return render(request, 'bee/landingpage.html',
+                          {'error': 'Unable to retrieve user information from Cognito.'})
     else:
-        return render(request, 'bee/landingpage.html')
+        return render(request, 'bee/landingpage.html', {'error': 'User session not found.'})
 
 
 def login_user(request, user):
