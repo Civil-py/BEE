@@ -159,18 +159,24 @@ def cognito_callback(request):
         'code': code,
         'redirect_uri': settings.AWS_COGNITO_REDIRECT_URL
     }, headers={'Content-Type': 'application/x-www-form-urlencoded'})
+
     token_data = response.json()
     id_token = token_data.get('id_token')
     access_token = token_data.get('access_token')
 
     claims = validate_cognito_token(id_token)
     if claims:
+        # Store tokens and claims in session
         request.session['id_token'] = id_token
         request.session['access_token'] = access_token
         request.session['username'] = claims['cognito:username']
         request.session['email'] = claims['email']
-        messages.success(request, f"Welcome {claims['email']}")
-        return redirect('index')
+
+        # Redirect to login_view to handle session creation and user login
+        return redirect('login')
+
+    # Handle error cases
+    messages.error(request, "Authentication failed. Please try again.")
     return redirect('landingpage')
 
 
