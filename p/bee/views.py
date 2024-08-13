@@ -92,10 +92,11 @@ def get_cognito_user_info(request, username):
         }, status=500)
 
 def login_view(request):
+    messages.success(request, f'it hit here')
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
-        response = cognito_authenticate(request, username)
+        # response = cognito_authenticate(request, username)
 
         if response:
             user_info = get_cognito_user_info(request, username)
@@ -114,7 +115,7 @@ def login_view(request):
                     user.save()
 
                 # Log the user in for the session
-                login(request, user)
+                login_user(request, user)
 
                 # Store Cognito tokens in the session for further use if needed
                 request.session['username'] = username
@@ -133,19 +134,19 @@ def login_view(request):
         return render(request, 'bee/landingpage.html')
 
 
-# def login(request, user):
-#     if request.method == "POST":
-#         user = request.POST['username']
-#         password = request.POST['password']
-#         user = authenticate(request, username=username, password=password)
-#         if user is not None:
-#             login(request, user)
-#             messages.success(request, f'Welcome back {user}!')
-#             return redirect('index')
-#         else:
-#             return render(request, 'bee/landingpage.html', {'error': 'Invalid username or password'})
-#     else:
-#         return render(request, 'bee/landingpage.html')
+def login_user(request, user):
+    if request.method == "POST":
+        user = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            messages.success(request, f'Welcome back {user}!')
+            return redirect('index')
+        else:
+            return render(request, 'bee/landingpage.html', {'error': 'Invalid username or password'})
+    else:
+        return render(request, 'bee/landingpage.html')
 
 
 def cognito_callback(request):
