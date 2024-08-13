@@ -151,7 +151,7 @@ def cognito_callback(request):
         'client_id': settings.AWS_COGNITO_APP_CLIENT_ID,
         'client_secret': settings.AWS_COGNITO_APP_CLIENT_SECRET,
         'code': code,
-        'redirect_uri': settings.AWS_COGNITO_REDIRECT_URL
+        'redirect_uri': 'https://bee-xj6g.onrender.com/bee/bee/cognito/callback/'
     }, headers={'Content-Type': 'application/x-www-form-urlencoded'})
 
     token_data = response.json()
@@ -170,7 +170,7 @@ def cognito_callback(request):
         return redirect('login')
 
     # Handle error cases
-    messages.error(request, f"{token_data}Authentication failed. Please try again.")
+    messages.error(request, f"{token_data} Authentication failed. Please try again.")
     return redirect('landingpage')
 
 
