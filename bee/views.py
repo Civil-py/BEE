@@ -341,6 +341,9 @@ def register(request):
         'form': form
     })
 
+def cognito_logout(request):
+    logout(request)
+    return redirect('landingpage')
 
 
 def logout_view(request):
