@@ -233,13 +233,14 @@ def cognito_callback(request):
 
     if check_token(token_data):
         login_view(request)
+        return redirect('index')
 
     else:
 
 
         messages.error(request, f" {token_data} Authentication failed. Please try again.")
         return redirect('landingpage')
-    
+
 
 
 def check_token(token_data):
