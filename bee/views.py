@@ -186,18 +186,47 @@ def sync_cognito_user(user_info):
     return user
 
 
+# def validate_cognito_token(token):
+#     try:
+#         # Get the public keys from AWS
+#         response = requests.get(settings.AWS_COGNITO_JWK_URL)
+#         keys = response.json().get('keys')
+# 
+#         # Get the key ID from the token headers
+#         headers = jwt.get_unverified_headers(token)
+#         kid = headers['kid']
+# 
+#         # Find the key
+#         key = next(k for k in keys if k['kid'] == kid)
+# 
+#         # Verify the token
+#         claims = jwt.decode(
+#             token,
+#             key,
+#             algorithms=['RS256'],
+#             audience=settings.AWS_COGNITO_APP_CLIENT_ID,
+#             issuer=f"https://cognito-idp.{settings.AWS_COGNITO_REGION}.amazonaws.com/{settings.AWS_COGNITO_USER_POOL_ID}"
+#         )
+#         return claims
+#     except Exception as e:
+#         print(f"Token validation error: {e}")
+#         return None
+
 def validate_cognito_token(token):
     try:
         # Get the public keys from AWS
         response = requests.get(settings.AWS_COGNITO_JWK_URL)
         keys = response.json().get('keys')
+        print(f"Public keys: {keys}")
 
         # Get the key ID from the token headers
         headers = jwt.get_unverified_headers(token)
         kid = headers['kid']
+        print(f"Token headers: {headers}")
 
         # Find the key
         key = next(k for k in keys if k['kid'] == kid)
+        print(f"Matched key: {key}")
 
         # Verify the token
         claims = jwt.decode(
@@ -207,10 +236,12 @@ def validate_cognito_token(token):
             audience=settings.AWS_COGNITO_APP_CLIENT_ID,
             issuer=f"https://cognito-idp.{settings.AWS_COGNITO_REGION}.amazonaws.com/{settings.AWS_COGNITO_USER_POOL_ID}"
         )
+        print(f"Token claims: {claims}")
         return claims
     except Exception as e:
         print(f"Token validation error: {e}")
         return None
+
 
 
 
