@@ -375,7 +375,7 @@ def landingpage(request):
 
 
 
-
+@login_required
 def index(request):
     return render(request,"bee/index.html")
 
@@ -412,7 +412,7 @@ def get_form(choice, post_data=None):
     return None
 
 
-
+@login_required
 def inputs(request, choice):
     if request.method == "POST":
         form = get_form(choice, request.POST)
