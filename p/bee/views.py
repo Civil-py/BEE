@@ -91,41 +91,73 @@ def get_cognito_user_info(request, username):
             'message': str(e)
         }, status=500)
 
+# def login_view(request):
+#     # Ensure this view is triggered by adding a success message
+#     messages.success(request, 'login_view triggered!')
+#
+#     # Get username from session, which should have been set in the cognito_callback
+#     username = request.session.get('username')
+#
+#     # Check if username is present in the session
+#     if username:
+#         # You should also have access to the tokens in the session if needed
+#         id_token = request.session.get('id_token')
+#         access_token = request.session.get('access_token')
+#
+#         # Retrieve user info from Cognito
+#         user_info = get_cognito_user_info(request, username)
+#
+#         if user_info['status'] == 'success':
+#             email = user_info['data'].get('email', username)
+#             user, created = User.objects.get_or_create(username=email, defaults={'email': email})
+#
+#             if created:
+#                 user.set_unusable_password()  # Set unusable password if no actual password is needed
+#                 user.save()
+#
+#             # Log the user in for the session
+#             login_user(request, user)
+#
+#             messages.success(request, f'Welcome back, {username}!')
+#             return redirect('index')
+#         else:
+#             return render(request, 'bee/landingpage.html',
+#                           {'error': 'Unable to retrieve user information from Cognito.'})
+#     else:
+#         return render(request, 'bee/landingpage.html', {'error': 'User session not found.'})
+#
 
 def login_view(request):
-    # Ensure this view is triggered by adding a success message
+    # Trigger the login_view with a success message
     messages.success(request, 'login_view triggered!')
 
-    # Get username from session, which should have been set in the cognito_callback
-    username = request.session.get('username')
+    # Generate a unique username using a portion of a UUID
+    username = f"{str(uuid4()).split('-')[2]}"
 
-    # Check if username is present in the session
-    if username:
-        # You should also have access to the tokens in the session if needed
-        id_token = request.session.get('id_token')
-        access_token = request.session.get('access_token')
+    # Create the user or get an existing one
+    user, created = User.objects.get_or_create(
+        username=username,
+        defaults={'email': "Thisseason@email.com"}
+    )
 
-        # Retrieve user info from Cognito
-        user_info = get_cognito_user_info(request, username)
+    if created:
+        # Set an unusable password since it's not needed for this use case
+        user.set_unusable_password()
+        user.save()
 
-        if user_info['status'] == 'success':
-            email = user_info['data'].get('email', username)
-            user, created = User.objects.get_or_create(username=email, defaults={'email': email})
+        # Log the user in for the session
+        login(request, user)
 
-            if created:
-                user.set_unusable_password()  # Set unusable password if no actual password is needed
-                user.save()
-
-            # Log the user in for the session
-            login_user(request, user)
-
-            messages.success(request, f'Welcome back, {username}!')
-            return redirect('index')
-        else:
-            return render(request, 'bee/landingpage.html',
-                          {'error': 'Unable to retrieve user information from Cognito.'})
+        # Send a welcome message and redirect to the index page
+        messages.success(request, f'Welcome, {username}!')
+        return redirect('index')
     else:
+        # Handle cases where the user already exists or other issues arise
         return render(request, 'bee/landingpage.html', {'error': 'User session not found.'})
+
+
+
+
 
 
 def login_user(request, user):
@@ -143,6 +175,36 @@ def login_user(request, user):
         return render(request, 'bee/landingpage.html')
 
 
+# def cognito_callback(request):
+#     code = request.GET.get('code')
+#     token_url = f"https://dominateconsulting.auth.{settings.AWS_COGNITO_REGION}.amazoncognito.com/oauth2/token"
+#     response = requests.post(token_url, data={
+#         'grant_type': 'authorization_code',
+#         'client_id': settings.AWS_COGNITO_APP_CLIENT_ID,
+#         'client_secret': settings.AWS_COGNITO_APP_CLIENT_SECRET,
+#         'code': code,
+#         'redirect_uri': 'https://bee-xj6g.onrender.com/bee/bee/cognito/callback/'
+#     }, headers={'Content-Type': 'application/x-www-form-urlencoded'})
+#
+#     token_data = response.json()
+#     id_token = token_data.get('id_token')
+#     access_token = token_data.get('access_token')
+#
+#     claims = validate_cognito_token(id_token)
+#     if claims:
+#         # Store tokens and claims in session
+#         request.session['id_token'] = id_token
+#         request.session['access_token'] = access_token
+#         request.session['username'] = claims['cognito:username']
+#         request.session['email'] = claims['email']
+#
+#         # Redirect to login_view to handle session creation and user login
+#         return redirect('login')
+#
+#     # Handle error cases
+#     messages.error(request, f" {token_data} Authentication failed. Please try again.")
+#     return redirect('landingpage')
+
 def cognito_callback(request):
     code = request.GET.get('code')
     token_url = f"https://dominateconsulting.auth.{settings.AWS_COGNITO_REGION}.amazoncognito.com/oauth2/token"
@@ -158,20 +220,31 @@ def cognito_callback(request):
     id_token = token_data.get('id_token')
     access_token = token_data.get('access_token')
 
-    claims = validate_cognito_token(id_token)
-    if claims:
-        # Store tokens and claims in session
-        request.session['id_token'] = id_token
-        request.session['access_token'] = access_token
-        request.session['username'] = claims['cognito:username']
-        request.session['email'] = claims['email']
+    # claims = validate_cognito_token(id_token)
+    # if claims:
+    #     # Store tokens and claims in session
+    #     request.session['id_token'] = id_token
+    #     request.session['access_token'] = access_token
+    #     request.session['username'] = claims['cognito:username']
+    #     request.session['email'] = claims['email']
+    #
+    #     # Redirect to login_view to handle session creation and user login
+    #     return redirect('login')
 
-        # Redirect to login_view to handle session creation and user login
-        return redirect('login')
+    if check_token(token_data):
+        login_view(request)
 
-    # Handle error cases
-    messages.error(request, f"{token_data} Authentication failed. Please try again.")
+
+
+    messages.error(request, f" {token_data} Authentication failed. Please try again.")
     return redirect('landingpage')
+
+def check_token(token_data):
+    if 'id_token' in token_data and len(token_data['id_token']) > 50:
+        return True
+    else:
+        return False
+
 
 
 def sync_cognito_user(user_info):
@@ -191,14 +264,14 @@ def sync_cognito_user(user_info):
 #         # Get the public keys from AWS
 #         response = requests.get(settings.AWS_COGNITO_JWK_URL)
 #         keys = response.json().get('keys')
-# 
+#
 #         # Get the key ID from the token headers
 #         headers = jwt.get_unverified_headers(token)
 #         kid = headers['kid']
-# 
+#
 #         # Find the key
 #         key = next(k for k in keys if k['kid'] == kid)
-# 
+#
 #         # Verify the token
 #         claims = jwt.decode(
 #             token,
