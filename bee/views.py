@@ -170,7 +170,7 @@ def cognito_callback(request):
         return redirect('login')
 
     # Handle error cases
-    messages.error(request, "Authentication failed. Please try again.")
+    messages.error(request, f"{token_data}Authentication failed. Please try again.")
     return redirect('landingpage')
 
 
