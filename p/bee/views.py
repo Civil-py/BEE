@@ -234,10 +234,13 @@ def cognito_callback(request):
     if check_token(token_data):
         login_view(request)
 
+    else:
 
 
-    messages.error(request, f" {token_data} Authentication failed. Please try again.")
-    return redirect('landingpage')
+        messages.error(request, f" {token_data} Authentication failed. Please try again.")
+        return redirect('landingpage')
+    
+
 
 def check_token(token_data):
     if 'id_token' in token_data and len(token_data['id_token']) > 50:
