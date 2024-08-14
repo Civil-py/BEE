@@ -129,7 +129,7 @@ def get_cognito_user_info(request, username):
 
 def login_view(request):
     # Trigger the login_view with a success message
-    messages.success(request, 'login_view triggered!')
+    # messages.success(request, 'login_view triggered!')
 
     # Generate a unique username using a portion of a UUID
     username = f"{str(uuid4()).split('-')[2]}"
@@ -149,7 +149,7 @@ def login_view(request):
         login(request, user)
 
         # Send a welcome message and redirect to the index page
-        messages.success(request, f'Welcome, {username}!')
+        messages.success(request, f'Welcome')
         return redirect('index')
     else:
         # Handle cases where the user already exists or other issues arise
@@ -462,7 +462,7 @@ def serialize_form_data(form):
 
 
 
-
+@login_required(login_url='https://dominateconsulting.auth.af-south-1.amazoncognito.com/login?client_id=1qa3ngvpha1hcge9arintssh30&response_type=code&scope=email+openid&redirect_uri=https%3A%2F%2Fbee-xj6g.onrender.com%2Fbee%2Fbee%2Fcognito%2Fcallback%2F')
 def financial_inputs(request, choice):
     if request.method == "POST":
         form = get_form(choice, request.POST)
